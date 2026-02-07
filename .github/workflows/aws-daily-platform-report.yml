@@ -1,0 +1,92 @@
+name: AWS Daily Platform Report
+
+on:
+  schedule:
+    - cron: "10 6 * * *" 
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write
+  contents: write
+
+concurrency:
+  group: aws-daily-platform-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+      TF_IN_AUTOMATION: "true"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # -------- AWS AUTH (OIDC) --------
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # -------- TERRAFORM (PLAN) --------
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.5"
+
+      - name: Terraform fmt / validate / plan
+        working-directory: terraform
+        run: |
+          terraform init -input=false
+          terraform fmt -check
+          terraform validate
+          terraform plan -input=false -no-color -out=../reports/terraform-plan.bin
+          terraform show -no-color ../reports/terraform-plan.bin > ../reports/terraform-plan.txt
+
+      # -------- TRIVY (SECURITY SCAN) --------
+      - name: Trivy filesystem scan (IaC + deps)
+        uses: aquasecurity/trivy-action@0.22.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: table
+          exit-code: 0               
+          severity: HIGH,CRITICAL
+          output: reports/trivy-report.txt
+
+      # -------- PYTHON (AWS COST REPORT) --------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install boto3
+
+      - name: Generate AWS cost report
+        run: |
+          python scripts/aws_daily_report.py
+
+      # -------- HEARTBEAT (DAILY COMMIT) --------
+      - name: Heartbeat (prove daily run)
+        run: |
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > reports/last-run.txt
+
+      # -------- COMMIT AS YOU (GREEN GRAPH) --------
+      - name: Commit report as user
+        env:
+          GH_USER_NAME: ${{ secrets.GH_USER_NAME }}
+          GH_USER_EMAIL: ${{ secrets.GH_USER_EMAIL }}
+        run: |
+          git config user.name "$GH_USER_NAME"
+          git config user.email "$GH_USER_EMAIL"
+          git add reports/
+          git commit -m "chore: daily aws report (cost + terraform + trivy)" || echo "No changes to commit"
+          git push
