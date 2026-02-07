@@ -1,0 +1,45 @@
+{
+  "date": "2026-02-06",
+  "total": {
+    "amount": 0.15,
+    "unit": "USD"
+  },
+  "top_services": [
+    {
+      "service": "Amazon Virtual Private Cloud",
+      "cost": 0.15
+    },
+    {
+      "service": "AWS Glue",
+      "cost": 0.0
+    },
+    {
+      "service": "AWS Key Management Service",
+      "cost": 0.0
+    },
+    {
+      "service": "Amazon DynamoDB",
+      "cost": 0.0
+    },
+    {
+      "service": "Amazon EC2 Container Registry (ECR)",
+      "cost": 0.0
+    },
+    {
+      "service": "Amazon Elastic Load Balancing",
+      "cost": 0.0
+    },
+    {
+      "service": "Amazon Route 53",
+      "cost": 0.0
+    },
+    {
+      "service": "Amazon Simple Storage Service",
+      "cost": 0.0
+    },
+    {
+      "service": "AmazonCloudWatch",
+      "cost": 0.0
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+# AWS Daily Platform Report — 2026-02-06
+
+## AWS Cost (yesterday)
+- Total spend: **0.15 USD**
+
+### Top services
+- Amazon Virtual Private Cloud: **0.15 USD**
+- AWS Glue: **0.0 USD**
+- AWS Key Management Service: **0.0 USD**
+- Amazon DynamoDB: **0.0 USD**
+- Amazon EC2 Container Registry (ECR): **0.0 USD**
+- Amazon Elastic Load Balancing: **0.0 USD**
+- Amazon Route 53: **0.0 USD**
+- Amazon Simple Storage Service: **0.0 USD**
+- AmazonCloudWatch: **0.0 USD**
+
+## Terraform checks
+- `terraform fmt -check`, `terraform validate`, and `terraform plan` ran successfully.
+- Plan-only mode (no apply).
+
