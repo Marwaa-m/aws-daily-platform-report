@@ -13,5 +13,6 @@ On a scheduled run or manual trigger, the workflow:
 4. Performs a lightweight static scan for additional visibility
 5. enerates report files and commits them back to the repository
 
-# Each run leaves a clear, versioned record of what was executed and what was observed.
+
+Each run leaves a clear, versioned record of what was executed and what was observed.
 
