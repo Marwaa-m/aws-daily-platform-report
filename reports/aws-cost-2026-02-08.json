@@ -1,0 +1,37 @@
+{
+  "date": "2026-02-08",
+  "total": {
+    "amount": 0.02,
+    "unit": "USD"
+  },
+  "top_services": [
+    {
+      "service": "AWS Cost Explorer",
+      "cost": 0.02
+    },
+    {
+      "service": "AWS Glue",
+      "cost": 0.0
+    },
+    {
+      "service": "AWS Key Management Service",
+      "cost": 0.0
+    },
+    {
+      "service": "Amazon EC2 Container Registry (ECR)",
+      "cost": 0.0
+    },
+    {
+      "service": "Amazon Route 53",
+      "cost": 0.0
+    },
+    {
+      "service": "Amazon Simple Storage Service",
+      "cost": 0.0
+    },
+    {
+      "service": "AmazonCloudWatch",
+      "cost": 0.0
+    }
+  ]
+}
